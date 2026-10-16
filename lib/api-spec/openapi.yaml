@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: emails
+    description: AI-assisted email reply generation
 paths:
   /healthz:
     get:
@@ -24,6 +26,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /health:
+    get:
+      operationId: mailopsHealth
+      tags: [health]
+      summary: MailOps health check
+      description: Returns the MailOps backend health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /emails/generate-reply:
+    post:
+      operationId: generateEmailReply
+      tags: [emails]
+      summary: Generate an email reply
+      description: Creates an editable email reply using the requested tone and length
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailReplyInput"
+      responses:
+        "200":
+          description: Reply generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailReply"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: AI provider or configuration unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +79,36 @@ components:
           type: string
       required:
         - status
+    EmailReplyInput:
+      type: object
+      properties:
+        emailContent:
+          type: string
+          minLength: 1
+          maxLength: 20000
+        tone:
+          type: string
+          enum: [Professional, Friendly, Formal, Concise]
+        length:
+          type: string
+          enum: [Short, Medium, Detailed]
+        additionalInstructions:
+          type: ["string", "null"]
+          maxLength: 2000
+      required: [emailContent, tone, length]
+    EmailReply:
+      type: object
+      properties:
+        reply:
+          type: string
+        status:
+          type: string
+          enum: [success]
+      required: [reply, status]
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
 

@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
-    "build": "node ./build.mjs",
-    "start": "node --enable-source-maps ./dist/index.mjs",
+    "dev": "mvn -f ../../backend/mailops/pom.xml spring-boot:run",
+    "build": "mvn -f ../../backend/mailops/pom.xml clean package -DskipTests",
+    "start": "java -jar ../../backend/mailops/target/mailops-api.jar",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

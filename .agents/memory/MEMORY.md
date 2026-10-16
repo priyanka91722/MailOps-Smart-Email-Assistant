@@ -1,0 +1,1 @@
+- [Spring AI property versions](spring-ai-properties.md) — Match Google GenAI option keys to the pinned Spring AI release, not the latest unversioned docs.

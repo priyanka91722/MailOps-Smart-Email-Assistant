@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "MailOps Smart Email Assistant"
+description = "An interview-ready AI email assistant: paste an email, choose a tone and length, and generate an editable reply using Spring AI and the Google Gemini API."
+version = "1.0.0"
+id = "artifacts/mailops"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24788
+
+[services.development]
+run = "pnpm --filter @workspace/mailops run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mailops", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/mailops/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24788"
+BASE_PATH = "/"

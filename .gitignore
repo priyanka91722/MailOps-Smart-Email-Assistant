@@ -47,3 +47,9 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Java build output and local credentials
+/backend/mailops/target/
+/.env
+/.env.*
+!/.env.example

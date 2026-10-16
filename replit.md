@@ -1,44 +1,50 @@
-# [Project name]
+# MailOps — Smart Email Assistant
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+MailOps turns a pasted email into a context-aware, editable reply using Spring Boot, Spring AI, and Google Gemini.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the Java Spring Boot API on `/api`
+- `pnpm --filter @workspace/mailops run dev` — run the React + Vite interface
+- `mvn -f backend/mailops/pom.xml test` — run backend tests (mocked AI; no external calls)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
+- `pnpm run build` — typecheck and build workspace packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required secret: `GEMINI_API_KEY`
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- React, TypeScript, and Vite frontend in `artifacts/mailops`
+- Java 17+ and Spring Boot 3.5 backend in `backend/mailops`
+- Spring AI 1.1 with the Google GenAI chat starter
+- OpenAPI contract and generated React Query hooks in `lib/api-spec` and `lib/api-client-react`
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/mailops/src/pages/home.tsx` — email reply workspace
+- `backend/mailops/src/main/java/com/mailops` — API, validation, prompt, and Gemini integration
+- `backend/mailops/src/test/java/com/mailops` — controller and service tests
+- `backend/mailops/src/main/resources/application.yml` — server and Spring AI configuration
+- `lib/api-spec/openapi.yaml` — source API contract
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Email content is pasted manually; Gmail access and sending are intentionally out of scope.
+- The Java service owns the `/api` endpoints and calls Gemini through Spring AI.
+- API keys are provided through Replit Secrets or environment variables, never source files.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Users paste an email, select tone and length, optionally give instructions, generate a reply, edit it, and copy it. The backend does not store email content.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Keep the implementation straightforward to demonstrate and explain in a placement interview.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The API uses the `/api` context path so it can be routed beside the React artifact.
+- Run OpenAPI codegen after editing `lib/api-spec/openapi.yaml`.
 
 ## Pointers
 
