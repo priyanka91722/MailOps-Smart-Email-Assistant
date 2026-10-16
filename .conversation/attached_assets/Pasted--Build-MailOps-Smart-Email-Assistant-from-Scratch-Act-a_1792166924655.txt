@@ -1,0 +1,160 @@
+# Build MailOps — Smart Email Assistant from Scratch
+
+Act as a senior full-stack developer. Build a complete, working full-stack project called **MailOps — Smart Email Assistant** from scratch. I am a final-year computer engineering student preparing for placement interviews, so the project must be functional, easy to demonstrate, and easy for me to explain.
+
+## 1. Mandatory Tech Stack
+
+Use **every technology listed below in the actual implementation**:
+
+- **Java** — primary backend programming language.
+- **Spring Boot** — backend framework and REST API server.
+- **Spring AI** — integration with the AI model.
+- **Google Gemini API** — generate context-aware email replies.
+- **React** — frontend interface.
+
+Do not replace any of these technologies with Python, Flask, Node.js, or another backend framework.
+
+## 2. Main Project Goal
+
+MailOps is an AI-powered email assistant that takes an email's content, understands its context and tone, and generates a suitable reply that the user can review, edit, and copy.
+
+The application should work without requiring Gmail account access. Users should be able to paste an email manually and generate a reply immediately.
+
+## 3. Frontend — React
+
+Create a clean, professional dashboard with:
+
+- Project name and simple MailOps branding.
+- A large text area to paste the original email.
+- A dropdown to choose the reply tone:
+  - Professional
+  - Friendly
+  - Formal
+  - Concise
+- A dropdown to choose the reply length: Short, Medium, or Detailed.
+- An optional field for additional instructions, such as accepting an invitation or requesting an extension.
+- A **Generate Reply** button with loading and error states.
+- A generated reply section with an editable text area.
+- A Copy Reply button.
+- A Regenerate Reply button.
+- Clear validation messages when the email input is empty.
+- A responsive layout that works on a laptop screen.
+
+Use React components and maintainable CSS. Keep the interface simple enough to explain during an interview.
+
+## 4. Backend — Java and Spring Boot
+
+Build a Spring Boot application with a proper package structure:
+
+- Controller layer for REST endpoints.
+- Service layer for email reply generation.
+- Request and response DTOs.
+- Configuration for Spring AI and Gemini.
+- Global or consistent error handling.
+
+Implement the following endpoints:
+
+**POST `/api/emails/generate-reply`**
+
+Accept a JSON request containing:
+- `emailContent`
+- `tone`
+- `length`
+- `additionalInstructions`
+
+Return a JSON response containing the generated reply and appropriate status information.
+
+**GET `/api/health`**
+
+Return a simple health status so the frontend or interviewer can verify that the backend is running.
+
+Validate incoming requests. Return understandable errors if the input is invalid, the Gemini API fails, or configuration is missing. Never expose API keys in responses or logs.
+
+## 5. AI Integration — Spring AI and Google Gemini API
+
+Use Spring AI's supported Google Gemini integration to call the actual Gemini API.
+
+The AI service must:
+- Read the original email content.
+- Generate a relevant reply rather than a generic template.
+- Follow the selected tone and length.
+- Incorporate the user's additional instructions.
+- Avoid inventing facts that are not present in the original email or instructions.
+- Return only the email reply, without unnecessary commentary or explanations.
+
+Use a clear prompt template and keep the AI logic inside the service layer.
+
+Use compatible Spring Boot and Spring AI versions. Verify the correct dependency names, configuration properties, and model identifier for the selected versions rather than guessing them.
+
+## 6. API Key and Configuration
+
+Use an environment variable such as `GEMINI_API_KEY` for the Google Gemini API key.
+
+- Do not hardcode secrets.
+- Do not commit API keys.
+- Include an `.env.example` or equivalent configuration guide without real credentials.
+- Configure the backend to read the key securely.
+- Explain how I can obtain a Gemini API key and configure it locally.
+- If the API key is missing, show a clear setup error rather than silently returning a fake AI response.
+
+## 7. Frontend–Backend Integration
+
+Connect React to the actual Spring Boot REST API.
+
+- Configure the correct API base URL.
+- Handle loading, successful responses, invalid inputs, network errors, and backend failures.
+- Ensure CORS is configured for the React development server.
+- Keep API calls in a separate frontend service or utility file.
+- Make sure the generated response is editable and can be copied.
+
+Do not simulate successful AI generation using hardcoded replies.
+
+## 8. Testing
+
+Provide:
+- Backend tests for request validation and the health endpoint.
+- Tests for the reply-generation service where practical, using mocks instead of making paid or external API calls.
+- A simple manual test checklist for the full application.
+- At least three sample email inputs for demonstrating different tones.
+
+## 9. Documentation and Run Instructions
+
+Create a useful README containing:
+
+- Project overview and features.
+- Architecture and request flow.
+- Technologies used and where each is implemented.
+- Prerequisites.
+- How to configure the Gemini API key.
+- Exact commands to start the Spring Boot backend and React frontend.
+- Example API request and response.
+- Common errors and fixes.
+- Known limitations and possible future improvements.
+
+Keep the code beginner-friendly and organized so I can understand and explain it during an interview.
+
+## 10. Implementation Order
+
+Build and verify the project in this order:
+
+1. Create the Spring Boot backend and health endpoint.
+2. Configure Spring AI and test an actual Gemini API call.
+3. Implement and test the reply-generation endpoint.
+4. Create the React interface.
+5. Connect the frontend to the backend.
+6. Test the complete workflow and fix errors.
+7. Complete the README and demonstration examples.
+
+After each stage, verify that it works before moving on.
+
+## Important Requirements
+
+- Build a real, runnable application, not just a UI prototype.
+- Do not claim that a feature works unless it has been implemented and tested.
+- Do not use mock AI responses in the final working flow.
+- If a dependency, API, or configuration fails, investigate and fix the underlying problem.
+- Do not leave placeholder methods, unfinished endpoints, or TODO comments for core features.
+- If an external API cannot be tested because credentials are unavailable, clearly identify that limitation and provide the exact steps to test it.
+- At the end, give me a concise summary of the files created, technologies actually integrated, commands to run the project, and any remaining issues.
+
+**Final objective:** I should be able to paste an email into the React interface, select a tone, click Generate Reply, receive an actual AI-generated response through Spring Boot, Spring AI, and the Google Gemini API, edit the response, and copy it.
